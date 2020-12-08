@@ -1,4 +1,4 @@
-package com.up.collection
+package com.up.collection.list
 
 /**
  * @Description scala中的:: , +:, :+, :::, +++, 等操作;

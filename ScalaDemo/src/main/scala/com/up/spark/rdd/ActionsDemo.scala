@@ -16,8 +16,13 @@ object ActionsDemo {
 
     //RDD两种构建方法   文件   内存
     val value: RDD[String] = sc.textFile("file:\\D:\\word.txt")
-    val rdd1: RDD[Int] = sc.makeRDD(List(1, 2, 3, 3,4,5),2)
+    val rdd1: RDD[Int] = sc.makeRDD(List(1, 2, 3,3,4,5),2)
     val rdd2 = sc.makeRDD(List(3, 4, 5))
+
+    //组合两个rdd
+    val value2: RDD[Int] = sc.union(rdd1, rdd2)
+    value2.foreach(println)
+    println("*************")
 
     //保留符合条件的元素
     val filterRDD: RDD[Int] = rdd1.filter(x => x != 1)
