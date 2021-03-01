@@ -1,4 +1,4 @@
-package com.up.spark.rdd.java;
+package com.up.spark;
 
 import java.io.Serializable;
 

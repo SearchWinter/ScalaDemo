@@ -1,4 +1,4 @@
-package com.up.spark.rdd.java;
+package com.up.spark;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;

@@ -1,5 +1,7 @@
 package com.up.circulation
 
+import org.testng.annotations.Test
+
 /**
  * @Description TODO
  * @Date 2020/6/29  11:44
@@ -16,9 +18,10 @@ object If {
     val x=10
     val y=20
     if(x<20){
-      return true
+       true
+    }else {
+      false
     }
-    false
   }
 
   def demo(n:Int,startTimestamp:Int)= {
