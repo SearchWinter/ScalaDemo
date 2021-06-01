@@ -2,6 +2,7 @@ package com.up.spark.rdd
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
+import org.testng.annotations.Test
 
 /**
  * @Description RDD 常用ACTION示例
@@ -13,9 +14,11 @@ object ActionsDemo {
 
     val conf: SparkConf = new SparkConf().setMaster("local[2]").setAppName(s"${this.getClass.getSimpleName}")
     val sc: SparkContext = new SparkContext(conf)
+    sc.setLogLevel("error")
 
     //RDD两种构建方法   文件   内存
-    val value: RDD[String] = sc.textFile("file:\\D:\\word.txt")
+//    val value: RDD[String] = sc.textFile("file:\\D:\\word.txt")
+    val value: RDD[String] = sc.textFile("data/word.txt")
     val rdd1: RDD[Int] = sc.makeRDD(List(1, 2, 3,3,4,5),2)
     val rdd2 = sc.makeRDD(List(3, 4, 5))
 
@@ -23,8 +26,16 @@ object ActionsDemo {
     val value2: RDD[Int] = sc.union(rdd1, rdd2)
     value2.foreach(println)
     println("*************")
+    //有一个rdd空/NULL，union的结果
+    var rdd3=sc.makeRDD(List(""));
+    value.union(rdd3).foreach(println)
+    println("******初始为NULL RDD*******")
+    var aRdd:RDD[Int]=null
+    aRdd=rdd1.union(rdd2)
+    aRdd.foreach(println)
 
     //保留符合条件的元素
+    println("******filter*******")
     val filterRDD: RDD[Int] = rdd1.filter(x => x != 1)
     filterRDD.foreach(println)
 
@@ -35,7 +46,7 @@ object ActionsDemo {
 //    val value1: RDD[Int] = rdd1.subtract(rdd2)
 
     //分组，按照传入函数的返回值进行分组,将相同的key对应的值放到一个迭代器中
-//    val value1: RDD[(Int, Iterable[Int])] = rdd1.groupBy(_ % 2)
+    val value1: RDD[(Int, Iterable[Int])] = rdd1.groupBy(_ % 2)
     /*output
     (0,CompactBuffer(2, 4))
     (1,CompactBuffer(1, 3, 3, 5))*/
@@ -47,9 +58,13 @@ object ActionsDemo {
     val group: RDD[(String, Iterable[Int])] = prdd.groupByKey()
     val reduce: RDD[(String, Int)] = prdd.reduceByKey((a,b)=>a+b)
 
+    println("*******groupByKey********")
+    group.foreach(println)
+    println("*******reduceByKey***********")
+    reduce.foreach(println)
 
     //sortByKey  根据key值排序，true 升序
-    val value1: RDD[(Int, String)] = sc.makeRDD(Array((1, "one"), (2, "two"), (1, "one2"), (3, "three"))).sortByKey(true,1)
+//    val value1: RDD[(Int, String)] = sc.makeRDD(Array((1, "one"), (2, "two"), (1, "one2"), (3, "three"))).sortByKey(true,1)
 
     val i: Int = rdd1.reduce(_ + _)
 
@@ -59,5 +74,4 @@ object ActionsDemo {
 
     sc.stop()
   }
-
 }
