@@ -68,8 +68,17 @@ object ActionsDemo {
 
     val i: Int = rdd1.reduce(_ + _)
 
+    //join (K, V) and (K, W) -> (K, (V, W))   结果中的K,是两个RDD中都存在的K
+    println("************join************")
+    val value3: RDD[(String, String)] = sc.makeRDD(List("guid1", "guid2", "guid3")).map(x => (x, x.substring(1)))
+    val value4: RDD[(String, String)] = sc.makeRDD(List("guid1", "guid2", "guid3","guid4")).map(x => (x, x.substring(4)))
+    val value5: RDD[(String, (String, String))] = value3.join(value4)
+    value5.foreach(println)
 
-    print(i)
+    //union 两个rdd的类型要一致
+    println("********union*********")
+    val value6: RDD[(String, String)] = value3.union(value4)
+    value6.foreach(println)
 //    value1.foreach(println)
 
     sc.stop()
