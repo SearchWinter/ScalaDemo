@@ -3,6 +3,7 @@ package com.up.spark;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.Function;
 
 import java.util.List;
 /**
@@ -22,7 +23,12 @@ public class TestDemo {
         System.out.println(take);
 
         FilterDemo filterDemo = new FilterDemo();
-        JavaRDD<String> filter = javaRDD.filter(filterDemo);
+        JavaRDD<String> filter = javaRDD.filter(new Function<String, Boolean>() {
+            @Override
+            public Boolean call(String v1) throws Exception {
+                return v1.length()>5;
+            }
+        });
 
         System.out.println(filter.take(10));
         javaSparkContext.close();
