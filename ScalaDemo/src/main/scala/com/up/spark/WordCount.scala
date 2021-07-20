@@ -15,15 +15,22 @@ object WordCount {
     val sc = new SparkContext(conf)
 
     sc.setLogLevel("WARN")
-    val lines = sc.textFile("data/ZGBLogingLog.txt")    //项目中的文件
+    //整个文件
+    val lines = sc.textFile("data/")
+    //多个文件路径，sc.textFile(fileName1+","+fileName2)
+//    val lines = sc.textFile("data/filterDemo.txt,data/word.txt")
+
+
+//    val lines = sc.textFile("data/ZGBLogingLog.txt")    //项目中的文件
 //    val lines: RDD[String] = sc.textFile("file:\\E:\\word.txt")       //本地文件
 
     val tuples: RDD[(String, Int)] = lines.map(lines => {
       val strings: Array[String] = lines.split("\\|")
-      strings(3)
+      strings(0)
     })
       .map(word => (word, 1))
       .reduceByKey((a, b) => a + b)
+      .filter(x=>x._2>200)
 
     //简写
     val value: RDD[(String, Int)] = lines.flatMap(_.split(" ")).map((_, 1)).reduceByKey(_ + _)
